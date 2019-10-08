@@ -1,11 +1,14 @@
-# a cancer machine learning project adapted from https://www.analyticsvidhya.com/blog/2015/08/learning-concept-knn-algorithms-programming/
-# by hunter hansen (myjkh2@outlook.com); doubleh2@github
+## A cancer machine learning project adapted from https://www.analyticsvidhya.com/blog/2015/08/learning-concept-knn-algorithms-programming/
+## Demonstrates repeated samples,  k-Nearest Neighbour algorithm (knn), a non-parametric classification algorithm
+## and some basic plotting
+
+# Required libraries
 library(data.table)
 library(class) # for knn
 library(gmodels) #for CrossTable()
 
 ## updates original demonstration utilizing data.tables and random selection of cases, with a repeated samples 
-## design. This allows us to view the frequency and distribution of folse negatives (e.g. malignant tumors 
+## design. This allows us to view the frequency and distribution of false negatives (e.g. malignant tumors 
 ## labled benign)  
 
 # prc <- read.csv("Prostate_Cancer.csv",stringsAsFactors = FALSE)    #This command imports the required data set and saves it to the prc data frame.
@@ -44,13 +47,13 @@ for(i in 1:100){
   prc_train_labels <-prc[my_rows, 1]
   prc_test_labels <- prc[!(1:nrow(prc) %in% my_rows), 1]  
   
-  # run knn
+  # run knn 
   prc_test_pred <- knn(train = prc_train, test = prc_test,cl = unlist(prc_train_labels), k=10)
   
   # table rsults, pull false negatives, add to results list 
   results <- CrossTable(x = unlist(prc_test_labels), y = prc_test_pred, prop.chisq = FALSE)
   false_neg <- results$prop.tbl[2]
-  all_negs <- c(all_negs, false_neg)
+  all_negs <<- c(all_negs, false_neg)
 }
 
 # plots
